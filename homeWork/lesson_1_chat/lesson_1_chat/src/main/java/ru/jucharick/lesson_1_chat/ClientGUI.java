@@ -103,15 +103,15 @@ public class ClientGUI extends JFrame {
     private void connectToServer(){
         try {
             if (chatServer.connectUser(this)){
-                appendLog("Is successful");
+                log.append("Is successful\n");
                 connect = true;
                 name = tfLogin.getText();
-                String log = chatServer.readFile();
+                String readFileLog = chatServer.readFile();
                 if (log != null){
-                    appendLog(log);
+                    log.append(readFileLog + "\n");
                 }
             } else {
-                appendLog("Not connected");
+                log.append("Not connected\n");
             }
         }
         catch (Exception e) {
@@ -126,7 +126,7 @@ public class ClientGUI extends JFrame {
             if (connect) {
                 connect = false;
                 chatServer.disconnectUser(this);
-                appendLog("Server STOP");
+                log.append("Server STOP\n");
             }
         }
         catch (Exception e) {
@@ -135,23 +135,19 @@ public class ClientGUI extends JFrame {
         }
     }
 
-    private void appendLog(String text){
-        log.append(text + "\n");
-    }
-
     public void answer(String text){
         log.append(text);
     }
 
     public void sendMsg() {
         if (connect){
-            String str = tfMessage.getText() + "\n";
+            String str = tfMessage.getText();
             if (!str.equals("")){
-                chatServer.addMsg(name + ": " + str);
+                chatServer.addMsg(name + ": " + str + "\n");
                 tfMessage.setText("");
             }
         } else {
-            appendLog("Ошибка отправки сообщения, нет подключения к серверу");
+            log.append("Ошибка отправки сообщения, нет подключения к серверу\n");
         }
     }
 }

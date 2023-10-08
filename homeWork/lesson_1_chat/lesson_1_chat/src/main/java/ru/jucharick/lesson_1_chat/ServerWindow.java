@@ -50,10 +50,10 @@ public class ServerWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (connect){
-                    appendLog("Сервер уже запущен");
+                    log.append("Сервер уже запущен\n");
                 } else {
                     connect = true;
-                    appendLog("Server START");
+                    log.append("Server START\n");
                 }
             }
         });
@@ -66,13 +66,13 @@ public class ServerWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!connect){
-                    appendLog("Сервер уже остановлен");
+                    log.append("Сервер уже остановлен\n");
                 } else {
                     connect = false;
                     for (ClientGUI clientGUI: clientList){
                         disconnectUser(clientGUI);
                     }
-                    appendLog("Server STOP");
+                    log.append("Server STOP\n");
                 }
             }
         });
@@ -116,10 +116,6 @@ public class ServerWindow extends JFrame {
         } catch (Exception e){
             e.printStackTrace();
         }
-    }
-
-    private void appendLog(String text){
-        log.append(text + "\n");
     }
 
     public String readFile(){
