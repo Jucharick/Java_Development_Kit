@@ -32,7 +32,7 @@ public class SettingWindow extends JFrame {
 
     SettingWindow(GameWindow gameWindow) {
         this.gameWindow = gameWindow;
- 
+
         int centerGameWindowX = gameWindow.getX() + gameWindow.getWidth() / 2;
         int centerGameWindowY = gameWindow.getY() + gameWindow.getHeight() / 2;
         setLocation(centerGameWindowX - WIDTH / 2, centerGameWindowY - HEIGHT / 2);
