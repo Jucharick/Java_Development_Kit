@@ -1,3 +1,5 @@
+package ru.jucharick;
+
 import ru.jucharick.client.ClientGUI;
 import ru.jucharick.server.ServerWindow;
 

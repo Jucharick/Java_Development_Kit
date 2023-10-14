@@ -1,4 +1,5 @@
 package ru.jucharick.server;
+
 import ru.jucharick.client.Client;
 import ru.jucharick.client.ClientGUI;
 
