@@ -15,16 +15,22 @@ public class Client {
 
     public boolean connectToServer(String name) { // должны еще передаваться login and password или должен быть отдельный класс для пользователя
         this.name = name;
-        if (server.connectUser(this)){
-            printText("Вы успешно подключились!\n");
-            connected = true;
-            String log = server.getHistory();
-            if (log != null){
-                printText(log);
+        try {
+            if (server.connectUser(this)) {
+                printText("Вы успешно подключились!\n");
+                connected = true;
+                String log = server.getHistory();
+                if (log != null) {
+                    printText(log);
+                }
+                return true;
+            } else {
+                printText("Подключение не удалось");
+                return false;
             }
-            return true;
-        } else {
-            printText("Подключение не удалось");
+        } catch (Exception e) {
+            System.out.println("Server error");
+            e.printStackTrace();
             return false;
         }
     }
@@ -45,12 +51,17 @@ public class Client {
         printText(answer);
     }
 
-    public void disconnect(){
-        if (connected) {
-            connected = false;
-            clientView.disconnectFromServer(); // плашка с кнопкой login
-            server.disconnectUser(this);
-            printText("Вы были отключены от сервера!");
+    public void disconnectFromServer(){
+        try {
+            if (connected) {
+                connected = false;
+                clientView.disconnectFromServer(); // плашка с кнопкой login
+                server.disconnectUser(this);
+                printText("Вы были отключены от сервера!");
+            }
+        } catch (Exception e) {
+            System.out.println("Error.");
+            e.printStackTrace();
         }
     }
 

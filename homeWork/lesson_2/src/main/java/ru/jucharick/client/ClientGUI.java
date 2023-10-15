@@ -1,6 +1,6 @@
 package ru.jucharick.client;
 
-import ru.jucharick.server.Server;
+import ru.jucharick.server.ServerGUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,13 +18,12 @@ public class ClientGUI extends JFrame implements ClientView{
 
     private Client client;
 
-    public ClientGUI(Server server){
-        this.client = new Client(this, server);
+    public ClientGUI(ServerGUI serverGUI){
+        this.client = new Client(this, serverGUI.getServer());
 
         setSize(WIDTH, HEIGHT);
         setResizable(false);
         setTitle("Chat client");
-        setLocation(server.getX() - 500, server.getY());
 
         createPanel();
 
@@ -44,7 +43,7 @@ public class ClientGUI extends JFrame implements ClientView{
 
     public void disconnectFromServer() {
         hideHeaderPanel(true);
-        client.disconnect();
+        client.disconnectFromServer();
     }
 
     private void hideHeaderPanel(boolean visible){
@@ -70,8 +69,8 @@ public class ClientGUI extends JFrame implements ClientView{
         headerPanel = new JPanel(new GridLayout(2, 3));
         tfIPAddress = new JTextField("127.0.0.1");
         tfPort = new JTextField("8189");
-        tfLogin = new JTextField("Ivan Ivanovich");
-        password = new JPasswordField("123456");
+        tfLogin = new JTextField("Jucharick");
+        password = new JPasswordField("1234");
         btnLogin = new JButton("login");
         btnLogin.addActionListener(new ActionListener() {
             @Override

@@ -1,7 +1,5 @@
 package ru.jucharick.server;
 
-import ru.jucharick.client.Client;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,6 +13,23 @@ public class ServerGUI extends JFrame implements ServerView {
     JTextArea log;
 
     private Server server;
+
+    public ServerGUI(){
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setSize(WIDTH, HEIGHT);
+        setResizable(false);
+        setTitle("Chat server");
+        setLocationRelativeTo(null);
+
+        server = new Server(this, new Storage());
+
+        createPanel();
+        setVisible(true);
+    }
+
+    public Server getServer(){
+        return server;
+    }
 
     private void createPanel() {
         log = new JTextArea();
@@ -30,14 +45,14 @@ public class ServerGUI extends JFrame implements ServerView {
         btnStart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                server.start();
+                server.connect();
             }
         });
 
         btnStop.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                server.stop();
+                server.disconnect();
             }
         });
 
@@ -47,7 +62,7 @@ public class ServerGUI extends JFrame implements ServerView {
     }
 
     @Override
-    public void showMessage(String msg) {
-
+    public void showMessage(String text) {
+        log.append(text);
     }
 }

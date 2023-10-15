@@ -2,38 +2,28 @@ package ru.jucharick.server;
 
 import ru.jucharick.client.Client;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Server extends JFrame {
-    public static final int WIDTH = 400;
-    public static final int HEIGHT = 300;
-    public static final String LOG_PATH = "./src/main/java/ru/jucharick/lesson_2/server/log.txt";
-
+public class Server {
     List<Client> clientList;
-
-    JButton btnStart, btnStop;
-    JTextArea log;
     boolean work;
+    private ServerGUI serverGUI;
+    private Repository repository;
 
-    public Server(){
+    public Server(ServerGUI serverGUI, Repository repository) {
+        this.serverGUI = serverGUI;
+        this.repository = repository;
         clientList = new ArrayList<>();
+    }
 
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(WIDTH, HEIGHT);
-        setResizable(false);
-        setTitle("Chat server");
-        setLocationRelativeTo(null);
-
-        createPanel();
-
-        setVisible(true);
+    public void connect(){
+        if (work){
+            serverGUI.showMessage("Сервер уже запущен\n");
+        } else {
+            work = true;
+            serverGUI.showMessage("Server START\n");
+        }
     }
 
     public boolean connectUser(Client client){
@@ -44,14 +34,25 @@ public class Server extends JFrame {
         return true;
     }
 
-    public String getHistory() {
-        return readLog();
+    public void disconnect(){
+        if (!work){
+            serverGUI.showMessage("Сервер уже остановлен\n");
+        } else {
+            work = false;
+            for (Client client: clientList){
+                disconnectUser(client);
+            }
+            for (int i = clientList.size() - 1; i >= 0; i--) {
+                disconnectUser(clientList.get(i));
+            }
+            serverGUI.showMessage("Server STOP\n");
+        }
     }
 
-    public void disconnectUser(Client client){
+    public void disconnectUser (Client client) {
         clientList.remove(client);
         if (client != null){
-            client.disconnect();
+            client.disconnectFromServer();
         }
     }
 
@@ -59,10 +60,10 @@ public class Server extends JFrame {
         if (!work){
             return;
         }
-//        text += "";
-        appendLog(text);
+        text += "";
+        serverGUI.showMessage(text + "\n");
         answerAll(text);
-        saveInLog(text);
+        saveLog(text);
     }
 
     private void answerAll(String text){
@@ -71,75 +72,11 @@ public class Server extends JFrame {
         }
     }
 
-    private void saveInLog(String text){
-        try (FileWriter writer = new FileWriter(LOG_PATH, true)){
-            writer.write(text);
-            writer.write("\n");
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+    private void saveLog(String text){
+        repository.save(text);
     }
 
-    private String readLog(){
-        StringBuilder stringBuilder = new StringBuilder();
-        try (FileReader reader = new FileReader(LOG_PATH);){
-            int c;
-            while ((c = reader.read()) != -1){
-                stringBuilder.append((char) c);
-            }
-            stringBuilder.delete(stringBuilder.length()-1, stringBuilder.length());
-            return stringBuilder.toString();
-        } catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private void appendLog(String text){
-        log.append(text + "\n");
-    }
-
-    private void createPanel() {
-        log = new JTextArea();
-        add(log);
-        add(createButtons(), BorderLayout.SOUTH);
-    }
-
-    private Component createButtons() {
-        JPanel panel = new JPanel(new GridLayout(1, 2));
-        btnStart = new JButton("Start");
-        btnStop = new JButton("Stop");
-
-        btnStart.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (work){
-                    appendLog("Сервер уже был запущен");
-                } else {
-                    work = true;
-                    appendLog("Сервер запущен!");
-                }
-            }
-        });
-
-        btnStop.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!work){
-                    appendLog("Сервер уже был остановлен");
-                } else {
-                    work = false;
-                    for (Client clientList: clientList){
-                        disconnectUser(clientList);
-                    }
-                    //TODO поправить удаление
-                    appendLog("Сервер остановлен!");
-                }
-            }
-        });
-
-        panel.add(btnStart);
-        panel.add(btnStop);
-        return panel;
+    public String getHistory() {
+        return repository.read();
     }
 }
