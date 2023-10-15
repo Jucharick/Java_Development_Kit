@@ -39,9 +39,6 @@ public class Server {
             serverGUI.showMessage("Сервер уже остановлен\n");
         } else {
             work = false;
-            for (Client client: clientList){
-                disconnectUser(client);
-            }
             for (int i = clientList.size() - 1; i >= 0; i--) {
                 disconnectUser(clientList.get(i));
             }
