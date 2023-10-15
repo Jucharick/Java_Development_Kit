@@ -1,6 +1,6 @@
 package ru.jucharick.client;
 
-import ru.jucharick.server.ServerWindow;
+import ru.jucharick.server.Server;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +18,7 @@ public class ClientGUI extends JFrame implements ClientView{
 
     private Client client;
 
-    public ClientGUI(ServerWindow server){
+    public ClientGUI(Server server){
         this.client = new Client(this, server);
 
         setSize(WIDTH, HEIGHT);
@@ -120,7 +120,7 @@ public class ClientGUI extends JFrame implements ClientView{
     }
 
     @Override
-    protected void processWindowEvent(WindowEvent e) {
+    protected void processWindowEvent(WindowEvent e) { // если окно клиента закрылось -> вызываем метод disconnectFromServer()
         super.processWindowEvent(e);
         if (e.getID() == WindowEvent.WINDOW_CLOSING){
             disconnectFromServer();

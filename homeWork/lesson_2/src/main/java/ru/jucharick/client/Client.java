@@ -1,14 +1,14 @@
 package ru.jucharick.client;
 
-import ru.jucharick.server.ServerWindow;
+import ru.jucharick.server.Server;
 
 public class Client {
     private String name;
     private ClientView clientView;
-    private ServerWindow server;
+    private Server server;
     private boolean connected; //изначально имеет значение false
 
-    public Client(ClientView clientView, ServerWindow serverWindow) { // ServerWindow заменить на server
+    public Client(ClientView clientView, Server serverWindow) { // ServerWindow заменить на server
         this.clientView = clientView;
         this.server = serverWindow;
     }

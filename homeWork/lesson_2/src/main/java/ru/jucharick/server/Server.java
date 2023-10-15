@@ -11,7 +11,7 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServerWindow extends JFrame {
+public class Server extends JFrame {
     public static final int WIDTH = 400;
     public static final int HEIGHT = 300;
     public static final String LOG_PATH = "./src/main/java/ru/jucharick/lesson_2/server/log.txt";
@@ -22,7 +22,7 @@ public class ServerWindow extends JFrame {
     JTextArea log;
     boolean work;
 
-    public ServerWindow(){
+    public Server(){
         clientList = new ArrayList<>();
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
