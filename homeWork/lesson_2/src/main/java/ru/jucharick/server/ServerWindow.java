@@ -12,82 +12,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ServerWindow extends JFrame {
-    private static final int WIDTH = 400;
-    private static final int HEIGHT = 500;
-    public static final String LOG_PATH = "./src/main/java/ru/jucharick/lesson_1_chat/log.txt";
+    public static final int WIDTH = 400;
+    public static final int HEIGHT = 300;
+    public static final String LOG_PATH = "./src/main/java/ru/jucharick/lesson_2/server/log.txt";
 
-    public static final String BTN_START = "Start";
-    public static final String BTN_STOP = "Stop";
-
-
-    JButton btnStart;
-    JButton btnStop;
-    JTextArea log;
-    boolean connect;
     List<Client> clientList;
 
-    ServerWindow(){
+    JButton btnStart, btnStop;
+    JTextArea log;
+    boolean work;
+
+    public ServerWindow(){
         clientList = new ArrayList<>();
 
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(WIDTH, HEIGHT);
-        setTitle("Server - window");
         setResizable(false);
+        setTitle("Chat server");
+        setLocationRelativeTo(null);
 
-        log = new JTextArea();
-        add(log);
-        add(createPanelBottom(),BorderLayout.SOUTH);
+        createPanel();
+
         setVisible(true);
     }
 
-    private Component createPanelBottom() {
-        JPanel panel = new JPanel(new GridLayout(1, 2));
-        panel.add(createButtonStart());
-        panel.add(createButtonStop());
-
-        return panel;
-    }
-
-    private Component createButtonStart() {
-        btnStart = new JButton(BTN_START);
-        btnStart.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (connect){
-                    log.append("Сервер уже запущен\n");
-                } else {
-                    connect = true;
-                    log.append("Server START\n");
-                }
-            }
-        });
-        return btnStart;
-    }
-
-    private Component createButtonStop() {
-        btnStop = new JButton(BTN_STOP);
-        btnStop.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!connect){
-                    log.append("Сервер уже остановлен\n");
-                } else {
-                    connect = false;
-                    for (Client client: clientList){
-                        disconnectUser(client);
-                    }
-                    log.append("Server STOP\n");
-                }
-            }
-        });
-        return btnStop;
-    }
-
     public boolean connectUser(Client client){
-        if (!connect){
+        if (!work){
             return false;
         }
         clientList.add(client);
         return true;
+    }
+
+    public String getHistory() {
+        return readLog();
     }
 
     public void disconnectUser(Client client){
@@ -97,31 +55,32 @@ public class ServerWindow extends JFrame {
         }
     }
 
-    public void addMsg(String str){
-        if (!connect){
+    public void sendMessage(String text){
+        if (!work){
             return;
         }
-        str += "";
-        log.append(str);
-        answerAll(str);
-        saveFile(str);
+//        text += "";
+        appendLog(text);
+        answerAll(text);
+        saveInLog(text);
     }
 
     private void answerAll(String text){
-        for (Client client: clientList){
-            client.serverAnswer(text); // serverAnswer
+        for (Client clientList: clientList){
+            clientList.serverAnswer(text);
         }
     }
 
-    private void saveFile(String text){
+    private void saveInLog(String text){
         try (FileWriter writer = new FileWriter(LOG_PATH, true)){
             writer.write(text);
+            writer.write("\n");
         } catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    public String readFile(){
+    private String readLog(){
         StringBuilder stringBuilder = new StringBuilder();
         try (FileReader reader = new FileReader(LOG_PATH);){
             int c;
@@ -135,5 +94,52 @@ public class ServerWindow extends JFrame {
             return null;
         }
     }
-}
 
+    private void appendLog(String text){
+        log.append(text + "\n");
+    }
+
+    private void createPanel() {
+        log = new JTextArea();
+        add(log);
+        add(createButtons(), BorderLayout.SOUTH);
+    }
+
+    private Component createButtons() {
+        JPanel panel = new JPanel(new GridLayout(1, 2));
+        btnStart = new JButton("Start");
+        btnStop = new JButton("Stop");
+
+        btnStart.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (work){
+                    appendLog("Сервер уже был запущен");
+                } else {
+                    work = true;
+                    appendLog("Сервер запущен!");
+                }
+            }
+        });
+
+        btnStop.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!work){
+                    appendLog("Сервер уже был остановлен");
+                } else {
+                    work = false;
+                    for (Client clientList: clientList){
+                        disconnectUser(clientList);
+                    }
+                    //TODO поправить удаление
+                    appendLog("Сервер остановлен!");
+                }
+            }
+        });
+
+        panel.add(btnStart);
+        panel.add(btnStop);
+        return panel;
+    }
+}

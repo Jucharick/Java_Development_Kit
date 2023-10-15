@@ -13,7 +13,7 @@ public class Client {
         this.server = serverWindow;
     }
 
-    private boolean connectToServer(String name) { // должны еще передаваться login and password или должен быть отдельный класс для пользователя
+    public boolean connectToServer(String name) { // должны еще передаваться login and password или должен быть отдельный класс для пользователя
         this.name = name;
         if (server.connectUser(this)){
             printText("Вы успешно подключились!\n");
@@ -33,7 +33,7 @@ public class Client {
     public void sendMsg(String message) {
         if (connected) {
             if (!message.isEmpty()) {
-                server.sendMsg(name + ": " + message);
+                server.sendMessage(name + ": " + message);
             }
         } else {
             printText("Нет подключения к серверу");
@@ -48,7 +48,7 @@ public class Client {
     public void disconnect(){
         if (connected) {
             connected = false;
-            clientView.disconnectFromServer();
+            clientView.disconnectFromServer(); // плашка с кнопкой login
             server.disconnectUser(this);
             printText("Вы были отключены от сервера!");
         }
