@@ -8,7 +8,6 @@ public class Main {
     public static void main(String[] args) {
         String[] seasons = {"Winter", "Spring", "Summer", "Autumn"};
         String[] seasons2 = {"Winter", "Spring", "Summer", "Autumn"};
-
         System.out.println(CompareArrays.compare(seasons, seasons2));
 
         Integer[] numbers1 = {1, 6, 5, 4};
@@ -20,5 +19,9 @@ public class Main {
         System.out.println(CompareArrays.compare(numbers3, numbers4));
 
         System.out.println(CompareArrays.compare(seasons, numbers4));
+
+        String[] nullArrStr = {null};
+        Integer[] nullArrInt = {null};
+        System.out.println(CompareArrays.compare(nullArrStr, nullArrInt));
     }
 }
