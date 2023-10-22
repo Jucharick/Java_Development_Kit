@@ -1,7 +1,5 @@
 package ru.jucharick.myArray;
 
-import java.util.Arrays;
-
 public class MyArray<T> {
     private Object[] objects = new Object[10];
     private int size;
