@@ -45,7 +45,7 @@ public class Main {
             System.out.println(employee);
         }
 
-        // поиск номера телефона по имени -> возвращает Map
+        // поиск номера телефона по имени
         System.out.println();
         System.out.println("Поиск номера телефона по имени");
         result = employeesBook.searchByName("Юлия");
