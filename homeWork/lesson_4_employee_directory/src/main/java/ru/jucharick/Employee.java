@@ -1,5 +1,5 @@
 package ru.jucharick;
-
+import java.util.Random;
 /*
 каждый сотрудник должен иметь следующие атрибуты:
 1. Табельный номер
@@ -8,23 +8,50 @@ package ru.jucharick;
 4. Стаж
 */
 
-public class Employee {
-    private int serviceNumber;
-    private String phoneNumber;
-    private String name;
-    private String surname;
-    private String experience;
+import java.util.Random;
 
-    public Employee(int serviceNumber, String phoneNumber, String name, String surname, String experience) {
-        this.serviceNumber = serviceNumber;
+public class Employee {
+    //region Fields
+    /**
+     * Табельный номер
+     */
+    private int id;
+    /**
+     * Номер телефона
+     */
+    private String phoneNumber;
+    /**
+     * Имя
+     */
+    private String name;
+    /**
+     * Фамилия
+     */
+    private String surname;
+    /**
+     * Стаж
+     */
+    private int experience;
+    //endregion
+
+
+    //region Constructors
+    public Employee(String phoneNumber, String name, String surname, int experience){
+        this(getCountId(), phoneNumber, name, surname, experience);
+    }
+
+    public Employee(int serviceNumber, String phoneNumber, String name, String surname, int experience) {
+        this.id = serviceNumber;
         this.phoneNumber = phoneNumber;
         this.name = name;
         this.surname = surname;
         this.experience = experience;
     }
+    //endregion
 
-    public int getServiceNumber() {
-        return serviceNumber;
+    //region Getters
+    public int getId() {
+        return id;
     }
 
     public String getPhoneNumber() {
@@ -39,7 +66,32 @@ public class Employee {
         return surname;
     }
 
-    public String getExperience() {
+    public int getExperience() {
         return experience;
     }
+    //endregion
+
+    //region Public Methods
+    @Override
+    public String toString() {
+        return  "{ " +
+                "Табельный номер: " + id +
+                ", Номер телефона: " + phoneNumber +
+                ", Имя: " + name +
+                ", Фамилия: " + surname +
+                ", Опыт: " + experience +
+                " }";
+    }
+    //endregion
+
+    //region Static Fields
+    private static int counter = 10000;
+    //endregion
+
+    //region Static Methods
+    public static int getCountId() {
+        counter = counter + 1;
+        return counter;
+    }
+    //endregion
 }

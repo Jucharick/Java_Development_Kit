@@ -1,5 +1,10 @@
 package ru.jucharick;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Random;
+
 /*
 Создать класс справочник сотрудников, который содержит внутри коллекцию сотрудников -
 каждый сотрудник должен иметь следующие атрибуты:
@@ -17,4 +22,30 @@ package ru.jucharick;
 
 
 public class Main {
+    public static void main(String[] args) {
+        EmployeesDirect employeesBook = new EmployeesDirect();
+        employeesBook.createEmployees();
+        // печать справочника
+        employeesBook.printEmployeesDirect();
+
+        // добавление нового сотрудника в справочник
+        employeesBook.addEmployee(new Employee("89874300", "Юлия", "Ли", 1));
+        employeesBook.addEmployee(new Employee("89874300", "Юлия", "Александрова", 1));
+        System.out.println();
+        System.out.println("Справочник с новым сотрудником: ");
+        employeesBook.printEmployeesDirect();
+
+        // поиск по по стажу
+        System.out.println();
+        System.out.println("Поиск по стажу");
+        System.out.println(employeesBook.searchByExperience(1));
+        // поиск номера телефона по имени
+        System.out.println();
+        System.out.println("Поиск номера телефона по имени");
+        System.out.println(employeesBook.searchByName("Юлия"));
+        // поиск по табельному номеру
+        System.out.println();
+        System.out.println("Поиск по табельному номеру");
+        System.out.println(employeesBook.searchByServiceNumber(10005));
+    }
 }
