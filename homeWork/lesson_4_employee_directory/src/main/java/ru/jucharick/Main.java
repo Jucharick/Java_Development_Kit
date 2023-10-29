@@ -1,9 +1,6 @@
 package ru.jucharick;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
 
 /*
 Создать класс справочник сотрудников, который содержит внутри коллекцию сотрудников -
@@ -22,15 +19,20 @@ import java.util.Random;
 
 
 public class Main {
+    public static List<Employee> result = new ArrayList<>();
+
     public static void main(String[] args) {
+
+
         EmployeesDirect employeesBook = new EmployeesDirect();
         employeesBook.createEmployees();
+
         // печать справочника
         employeesBook.printEmployeesDirect();
 
         // добавление нового сотрудника в справочник
         employeesBook.addEmployee(new Employee("89874300", "Юлия", "Ли", 1));
-        employeesBook.addEmployee(new Employee("89874300", "Юлия", "Александрова", 1));
+        employeesBook.addEmployee(new Employee("87777700", "Юлия", "Александрова", 1));
         System.out.println();
         System.out.println("Справочник с новым сотрудником: ");
         employeesBook.printEmployeesDirect();
@@ -38,14 +40,25 @@ public class Main {
         // поиск по по стажу
         System.out.println();
         System.out.println("Поиск по стажу");
-        System.out.println(employeesBook.searchByExperience(1));
-        // поиск номера телефона по имени
+        result = employeesBook.searchByExperience(1);
+        for (Employee employee: result) {
+            System.out.println(employee);
+        }
+
+        // поиск номера телефона по имени -> возвращает Map
         System.out.println();
         System.out.println("Поиск номера телефона по имени");
-        System.out.println(employeesBook.searchByName("Юлия"));
+        result = employeesBook.searchByName("Юлия");
+        for (Employee employee: result) {
+            System.out.println(employee.getName() + " " + employee.getPhoneNumber());
+        }
+
         // поиск по табельному номеру
         System.out.println();
         System.out.println("Поиск по табельному номеру");
-        System.out.println(employeesBook.searchByServiceNumber(10005));
+        result = employeesBook.searchByServiceNumber(10005);
+        for (Employee employee: result) {
+            System.out.println(employee);
+        }
     }
 }
