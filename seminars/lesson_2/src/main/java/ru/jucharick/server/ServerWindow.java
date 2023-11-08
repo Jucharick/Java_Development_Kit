@@ -37,7 +37,7 @@ public class ServerWindow extends JFrame {
         setVisible(true);
     }
 
-    public boolean connectUser(Client client){
+    public boolean connectUser(ClientGUI client){
         if (!work){
             return false;
         }
@@ -49,7 +49,7 @@ public class ServerWindow extends JFrame {
         return readLog();
     }
 
-    public void disconnectUser(Client clientGUI){
+    public void disconnectUser(ClientGUI clientGUI){
         clientGUIList.remove(clientGUI);
         if (clientGUI != null){
             clientGUI.disconnectFromServer();
