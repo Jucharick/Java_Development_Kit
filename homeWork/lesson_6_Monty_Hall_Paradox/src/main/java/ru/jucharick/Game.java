@@ -71,7 +71,6 @@ public class Game {
         }
         return 0;
     }
-
     //endregion
 
     //region Static Fields
